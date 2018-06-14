@@ -1,5 +1,7 @@
+// +build !zmq_2_1
+
 /*
-  Copyright 2010 Alec Thomas
+  Copyright 2010-2012 Alec Thomas
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -13,21 +15,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-package main
 
-import zmq "../"
-//import "net/http"
-//import "html/template"
+package gozmq
 
-func main() {
-	context, _ := zmq.NewContext()
-	socket, _ := context.NewSocket(zmq.REP)
-	socket.Bind("tcp://127.0.0.1:5000")
-	socket.Bind("tcp://127.0.0.1:6000")
+/*
+#cgo pkg-config: libzmq
+#include <zmq.h>
+*/
+import "C"
 
-	for {
-		msg, _ := socket.Recv(0)
-		println("Got", string(msg))
-		socket.Send(msg, 0)
-	}
-}
+const (
+	RCVTIMEO = IntSocketOption(C.ZMQ_RCVTIMEO)
+	SNDTIMEO = IntSocketOption(C.ZMQ_SNDTIMEO)
+)

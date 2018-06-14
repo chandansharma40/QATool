@@ -16,7 +16,7 @@
 package main
 
 import "fmt"
-import zmq "../.."
+import zmq "../"
 import "time"
 //import "net/http"
 //import "html/template"
