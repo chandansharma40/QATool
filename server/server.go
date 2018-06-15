@@ -1,18 +1,4 @@
-/*
-  Copyright 2010 Alec Thomas
 
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-*/
 package main
 
 import zmq "../"
@@ -31,3 +17,91 @@ func main() {
 		socket.Send(msg, 0)
 	}
 }
+/*
+package main
+
+import (
+    "bufio"
+	"io"
+	"log"
+	"net"
+	"os"
+	"strconv"
+	"strings"
+)
+
+const (
+	Message       = "Pong"
+	StopCharacter = "\r\n\r\n"
+)
+
+func SocketServer(port int) {
+
+	listen, err := net.Listen("tcp4", ":"+strconv.Itoa(port))
+	defer listen.Close()
+	if err != nil {
+		log.Fatalf("Socket listen port %d failed,%s", port, err)
+		os.Exit(1)
+	}
+	log.Printf("Begin listen port: %d", port)
+
+	for {
+		conn, err := listen.Accept()
+		if err != nil {
+			log.Fatalln(err)
+			continue
+		}
+		go handler(conn)
+	}
+
+}
+
+func handler(conn net.Conn) {
+
+	defer conn.Close()
+
+	var (
+		buf = make([]byte, 1024)
+		r   = bufio.NewReader(conn)
+		w   = bufio.NewWriter(conn)
+	)
+
+ILOOP:
+	for {
+		n, err := r.Read(buf)
+		data := string(buf[:n])
+
+		switch err {
+		case io.EOF:
+			break ILOOP
+		case nil:
+			log.Println("Receive:", data)
+			if isTransportOver(data) {
+				break ILOOP
+			}
+
+		default:
+			log.Fatalf("Receive data failed:%s", err)
+			return
+		}
+
+	}
+	w.Write([]byte(Message))
+	w.Flush()
+	log.Printf("Send: %s", Message)
+
+}
+
+func isTransportOver(data string) (over bool) {
+	over = strings.HasSuffix(data, "\r\n\r\n")
+	return
+}
+
+func main() {
+
+	port := 3333
+
+	SocketServer(port)
+
+}
+*/
